@@ -13,15 +13,17 @@ import {updateNewPostText} from "./redux/state";
 const App = (props) => {
     return (
         <BrowserRouter>
+            <Header/>
             <div className='app-wrapper'>
-                <Header/>
+
                 <Nav/>
                 <div className='app_wrapper_content'>
                     <Route path='/dialogs'
-                           render={() => <Dialogs state={props.state.dialogsPage}/>}/>
+                           render={() => <Dialogs store={props.store}/>}/>
                     <Route path='/profile'
                            render={() => <Profile profilePage={props.state.profilePage}
-                                                  dispatch={props.dispatch}/>
+                                                  dispatch={props.dispatch}
+                           />
                            }/>
                     <Route path='/news' component={News}/>
                     <Route path='/music' component={Music}/>
