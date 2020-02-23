@@ -7,6 +7,7 @@ import Message from "./message/Message";
 
 const Dialogs = (props) => {
 
+
     let dialogsElements = props.dialogsPage.dialogs.map(d => <DialogItems name={d.name} id={d.id}/>);
     let messageElements = props.dialogsPage.messages.map(m => <Message message={m.message}/>);
     let messageBody = props.dialogsPage.newMessageBody;
@@ -17,6 +18,7 @@ const Dialogs = (props) => {
     let OnMessageChange = (e) => {
         let body = e.target.value;
         props.updateNewMessageBody(body);
+
     }
 
 
