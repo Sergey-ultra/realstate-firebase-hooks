@@ -1,39 +1,19 @@
 import React from "react";
-import styles from './users.module.css'
+import styles from './users.module.css';
+import * as axios from 'axios';
+import userPhoto from '../../assets/images/24-248729_stockvader-predicted-adig-user-profile-image-png-transparent.png'
 
 const Users = (props) => {
 
 
     if (props.users.length === 0) {
-        props.setUsers([
-                {
-                    id: 1,
-                    photoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Dmitry_Nagiev_2017_4.jpg/274px-Dmitry_Nagiev_2017_4.jpg',
-                    followed: true,
-                    fullName: 'Sergey',
-                    status: 'Im a boss',
-                    location: {city: 'Minsk', country: 'Belorus'}
-                },
-                {
-                    id: 2,
-                    photoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Dmitry_Nagiev_2017_4.jpg/274px-Dmitry_Nagiev_2017_4.jpg',
-                    followed: false,
-                    fullName: 'Kira',
-                    status: 'Big deal',
-                    location: {city: 'Moscow', country: 'Russia'}
-                },
-                {
-                    id: 3,
-                    photoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Dmitry_Nagiev_2017_4.jpg/274px-Dmitry_Nagiev_2017_4.jpg',
-                    followed: true,
-                    fullName: 'Masha',
-                    status: 'Im investor',
-                    location: {city: 'Kiev', country: 'Ukraine'}
-                }
-            ]
-        )
+        axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
+
+
+            props.setUsers(response.data.items);
+        });
     }
-    ;
+
 
     return (
         <div>
@@ -41,7 +21,8 @@ const Users = (props) => {
                 props.users.map(u => <div key={u.id}>
                     <span>
                         <div>
-                            <img src={u.photoUrl} className={styles.usersPhoto}/>
+                            <img src={u.photos.small !== null ? u.photos.small : userPhoto}
+                                 className={styles.usersPhoto}/>
                         </div>
                         <div>
                             {u.followed
@@ -57,12 +38,12 @@ const Users = (props) => {
                     </span>
                         <span>
                         <span>
-                            <div>{u.fullName}</div>
+                            <div>{u.name}</div>
                             <div>{u.status}</div>
                         </span>
                     <span>
-                        <div>{u.location.country}</div>
-                        <div>{u.location.city}</div>
+                        <div>{'u.location.country'}</div>
+                        <div>{'u.location.city'}</div>
                     </span>
                 </span>
                     </div>
