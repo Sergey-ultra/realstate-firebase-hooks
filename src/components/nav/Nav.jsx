@@ -15,7 +15,7 @@ const Nav = () => {
         <nav className={s.nav}>
             <NavBar menu='Profile' path='/profile'/>
             <NavBar menu='Messages' path='/dialogs'/>
-            <NavBar menu='News' path='/news'/>
+            <NavBar menu='Users' path='/users'/>
             <NavBar menu='Music' path='/music'/>
             <NavBar menu='Settings' path='/settings'/>
         </nav>
