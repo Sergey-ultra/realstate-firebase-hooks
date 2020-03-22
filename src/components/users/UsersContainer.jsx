@@ -1,33 +1,29 @@
 import React from "react";
 import {connect} from "react-redux";
 import {
-    follow,
+    follow, getUsers,
     setCurrentPage,
-    setUsers,
-    setUsersCount, toggleFollowingProgress,
-    toggleIsFetching,
+    toggleFollowingProgress,
+
     unfollow
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import Preloader from "../common/preloader/preloader";
-import {usersAPI} from "../../dal/dal";
+import {withAuthComponent} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
+import Pagination from "../common/pagination";
+
+
 
 class UsersContainer extends React.Component {
     componentDidMount() {
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-            this.props.toggleIsFetching(false);
-            this.props.setUsers(data.items);
-            this.props.setUsersCount(data.totalCount);
-            });
+        this.props.getUsers(this.props.currentPage, this.props.pageSize);
     }
 
     onPageChanged = (pageNumber) => {
-        this.props.toggleIsFetching(true);
+
         this.props.setCurrentPage(pageNumber);
-        usersAPI.getUsers(pageNumber, this.props.pageSize).then(data => {
-            this.props.toggleIsFetching(false);
-            this.props.setUsers(data.items);
-            });
+        this.props.getUsers(pageNumber, this.props.pageSize);
     }
 
 
@@ -43,8 +39,8 @@ class UsersContainer extends React.Component {
                 users={this.props.users}
                 unfollow={this.props.unfollow}
                 follow={this.props.follow}
-                toggleFollowingProgress={this.props.toggleFollowingProgress}
                 followingInProgress={this.props.followingInProgress}
+                paginationPortionSize={this.props.paginationPortionSize}
 
         />
         </>
@@ -59,14 +55,15 @@ let mapStateToProps = (state) => {
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
         isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress
+        followingInProgress: state.usersPage.followingInProgress,
+        paginationPortionSize: state.usersPage. paginationPortionSize
 
     }
 }
 
 
-export default connect(mapStateToProps, {
-    follow, unfollow, setUsers, setCurrentPage, setUsersCount, toggleIsFetching, toggleFollowingProgress
-})(UsersContainer);
+export default compose(
+    connect(mapStateToProps, {follow, unfollow,  setCurrentPage,   toggleFollowingProgress, getUsers}),
+    withAuthComponent)(UsersContainer);
 
 
